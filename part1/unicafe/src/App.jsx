@@ -1,35 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const StatisticLine = (props) => {
+  return (
+    <>
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+      </tr>
+    </>
+  );
+};
+const Button = ({ children, onClick }) => {
+  return <button onClick={onClick}>{children}</button>;
+};
+const Statistics = (props) => {
+  return (
+    <>
+      <table>
+        <StatisticLine text="good" value={props.good} />
+        <StatisticLine text="neutral" value={props.neutral} />
+        <StatisticLine text="bad" value={props.bad} />
+        <StatisticLine
+          text="Total"
+          value={props.bad + props.good + props.neutral}
+        />
+        <StatisticLine
+          text="Average"
+          value={
+            (-props.bad + props.good) / (props.good + props.bad + props.neutral)
+          }
+        />
+        <StatisticLine
+          text="Positive"
+          value={(100 * props.good) / (props.bad + props.good + props.neutral)}
+        />
+      </table>
+    </>
+  );
+};
+const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Give Feedback</h1>
+      <Button onClick={() => setGood((prev) => prev + 1)}>good</Button>
+      <Button onClick={() => setNeutral((prev) => prev + 1)}>neutral</Button>
+      <Button onClick={() => setBad((prev) => prev + 1)}>bad</Button>
+      <br />
+      <h1>Statistics</h1>
+      {good || neutral || bad ? (
+        <Statistics good={good} neutral={neutral} bad={bad} />
+      ) : (
+        "No feedback given"
+      )}
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
