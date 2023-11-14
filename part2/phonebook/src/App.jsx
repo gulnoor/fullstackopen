@@ -5,10 +5,14 @@ import Persons from "./Components/Persons";
 import axios from "axios";
 
 const App = () => {
+
   const [persons, setPersons] = useState([]);
   const [query, setQuery] = useState("");
+
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
+    axios
+    .get("http://localhost:3001/persons")
+    .then((response) => {
       setPersons(response.data);
     });
   }, []);
@@ -19,7 +23,7 @@ const App = () => {
       <Filter query={query} setQuery={setQuery} />
       <Form persons={persons} setPersons={setPersons} />
       <h2>Numbers</h2>
-      <Persons query={query} persons={persons} />
+      <Persons query={query} persons={persons} setPersons={setPersons} />
     </div>
   );
 };
