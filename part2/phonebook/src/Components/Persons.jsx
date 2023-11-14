@@ -1,16 +1,28 @@
 import backendServices from "../hooks/backendServices";
 
-const Person = ({ person, setPersons }) => {
+const Person = ({ person, setPersons, setMessage }) => {
   const id = person.id;
   const handleDelete = () => {
     backendServices
       .deletePerson(id)
-      .then(() =>
+      .then(() => {
         setPersons((prev) => {
           return prev.filter((person) => person.id !== id);
-        })
-      )
-      .catch((err) => console.log(err));
+        });
+        setMessage({
+          message: `${person.name} deleted successfully`,
+          type: "success",
+        });
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
+      })
+      .catch((error) => {
+        setMessage({ message: `${error}`, type: "error" });
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
+      });
   };
   return (
     <>
@@ -20,7 +32,7 @@ const Person = ({ person, setPersons }) => {
   );
 };
 
-const Persons = ({ persons, query, setPersons }) => {
+const Persons = ({ persons, query, setPersons, setMessage }) => {
   return (
     <>
       {persons
@@ -31,7 +43,12 @@ const Persons = ({ persons, query, setPersons }) => {
         })
         .map((person) => {
           return (
-            <Person setPersons={setPersons} person={person} key={person.id} />
+            <Person
+              setMessage={setMessage}
+              setPersons={setPersons}
+              person={person}
+              key={person.id}
+            />
           );
         })}
     </>

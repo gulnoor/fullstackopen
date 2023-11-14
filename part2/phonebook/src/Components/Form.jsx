@@ -1,7 +1,7 @@
 import { useState } from "react";
 import backendServices from "../hooks/backendServices";
 
-const Form = ({ persons, setPersons }) => {
+const Form = ({ persons, setPersons, setMessage }) => {
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const handleNameInput = (e) => {
@@ -28,10 +28,22 @@ const Form = ({ persons, setPersons }) => {
               p.name === exixtingPerson.name ? response.data : p
             )
           );
+          setMessage({
+            message: `${newName} updated successfully`,
+            type: "success",
+          });
+          setTimeout(() => {
+            setMessage("");
+          }, 3000);
           setNewName("");
           setNewPhone("");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          setMessage({ message: `${error}`, type: "error" });
+          setTimeout(() => {
+            setMessage("");
+          }, 3000);
+        });
     } else {
       backendServices
         .savePerson({ name: newName, number: newPhone })
@@ -39,10 +51,22 @@ const Form = ({ persons, setPersons }) => {
           setPersons((prev) => {
             return [...prev, response.data];
           });
+          setMessage({
+            message: `${newName} added successfully`,
+            type: "success",
+          });
+          setTimeout(() => {
+            setMessage("");
+          }, 3000);
           setNewName("");
           setNewPhone("");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          setMessage({ message: `${error}`, type: "error" });
+          setTimeout(() => {
+            setMessage("");
+          }, 3000);
+        });
     }
   };
   return (
