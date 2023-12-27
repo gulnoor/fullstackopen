@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const errorHandler = (error, req, res, next) => {
   console.log(error.message);
   if (error.name === 'CastError') {
@@ -9,11 +10,13 @@ const errorHandler = (error, req, res, next) => {
   return next(error);
 };
 const requestLogger = (request, _, next) => {
-  console.log('-------------------------');
-  console.log('Method:', request.method);
-  console.log('Path:  ', request.path);
-  console.log('Body:  ', request.body);
-  console.log('-------------------------');
+  console.log(
+    `-------------------------
+  Method: ${request.method}
+  Path: ${request.path}
+  Body: ${JSON.stringify(request.body)})}
+  ----------------------`,
+  );
   next();
 };
 const unknownPathHandler = (req, res, next) => {
