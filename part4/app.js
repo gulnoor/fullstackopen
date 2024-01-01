@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { default: mongoose } = require('mongoose');
 const cors = require('cors');
 const express = require('express');
@@ -9,25 +8,31 @@ const {
   errorHandler,
   requestLogger,
   unknownPathHandler,
+  getToken,
 } = require('./utils/middleware');
+const userRouter = require('./controllers/users');
+const { consoleLog } = require('./utils/logger');
+const loginRouter = require('./controllers/login');
 
 const app = express();
-const dbURI = process.env.NODE_ENV === 'test' ? MONGODB_URL_TEST : MONGODB_URL_PRODUCTION;
-console.log(dbURI);
+const dbURI = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development' ? MONGODB_URL_TEST : MONGODB_URL_PRODUCTION;
 mongoose.set('strictQuery', false);
 mongoose
   .connect(dbURI)
   .then(() => {
-    console.log('connected to MongoDB');
+    ('connected to MongoDB');
   })
   .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message);
+    consoleLog('error connecting to MongoDB:', error.message);
   });
 
 app.use(cors());
 app.use(express.json());
+app.use(getToken);
 app.use(requestLogger);
+app.use('/login', loginRouter);
 app.use('/api/blogs', blogRouter);
+app.use('/api/users', userRouter);
 app.use(unknownPathHandler);
 app.use(errorHandler);
 

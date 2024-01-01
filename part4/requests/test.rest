@@ -1,15 +1,32 @@
 
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imdvb2xudXIiLCJpZCI6IjY1OTFkM2U0NzExMjViZGIwYzYzMzAzYSIsImlhdCI6MTcwNDA1NTgwMn0.ZvscOn9d3BSFhbAY6jWzzN1DEb-0DI0hRzviqDc0_C8
 
 {
-    "title": "",
-    "author": "test",
-    "url": "test",
-    "likes": 0,
-    "ff": "ff"
+    "title":"causal inference fo the suicidal",
+    "author":"goolnur",
+    "url":"gulnoor.site",
+    "notInSchema":"garbage"
 }
 
+###
+POST http://localhost:3001/login
+Content-Type: application/json
+
+{
+    "username":"goolnur",
+    "password":"mango"
+}
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "username":"goolnur",
+    "name":"Gul Noor",
+    "password":"mango"
+}
 ###
 GET http://localhost:3001/api/blogs
 ###
